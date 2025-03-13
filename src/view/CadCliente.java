@@ -8,11 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
 
 
 
@@ -20,23 +18,6 @@ public class CadCliente extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        StackPane background = new StackPane();
-        Image backgroundImage = new Image(getClass().getResourceAsStream("/view/img/BackGround.jpeg"));
-        BackgroundImage backGroundImg = new BackgroundImage(backgroundImage,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(BackgroundSize.AUTO,BackgroundSize.AUTO, false, false, true, true)
-        );
-        background.setBackground(new Background(backGroundImg));
-
-        Rectangle rectangle = new Rectangle(350, 500);
-        rectangle.setFill(Color.WHITE);
-        rectangle.setArcHeight(60);
-        rectangle.setArcWidth(60);
-        rectangle.setOpacity(0.8);
-
 
         Image iconBtnCadastrar = new Image(getClass().getResourceAsStream("/view/img/mais.png"));
         Image iconBtnAtualizar = new Image(getClass().getResourceAsStream("/view/img/Atualizar.png"));
@@ -82,6 +63,19 @@ public class CadCliente extends Application {
         TextField txtEmail = new TextField();
         txtEmail.setMaxWidth(200);
 
+        GridPane fromGrid = new GridPane();
+        fromGrid.setAlignment(Pos.CENTER);
+        fromGrid.add(lblNome,0, 0);
+        fromGrid.add(txtNome, 1, 0);
+        fromGrid.add(lblCpf, 0, 1);
+        fromGrid.add(txtCpf, 1, 1);
+        fromGrid.add(lblTelefone, 0, 2);
+        fromGrid.add(txtTelefone, 1, 2);
+        fromGrid.add(lblEmail, 0, 3);
+        fromGrid.add(txtEmail, 1, 3);
+        fromGrid.setHgap(10);
+        fromGrid.setVgap(10);
+
         Button btnCadastrar = new Button("Cadastrar", iconCadastrar);
         btnCadastrar.setMaxWidth(105);
         btnCadastrar.setStyle("-fx-background-color: #006039");
@@ -92,10 +86,33 @@ public class CadCliente extends Application {
         btnExcluir.setMaxWidth(105);
         btnExcluir.setStyle("-fx-background-color: #006039");
 
-        VBox layout = new VBox(10, tituloBox, lblNome, txtNome, lblCpf, txtCpf, lblTelefone, txtTelefone, lblEmail, txtEmail,btnCadastrar, btnAtualizar, btnExcluir);
+        HBox buttonsBox = new HBox (btnAtualizar, btnCadastrar, btnExcluir);
+        buttonsBox.setSpacing(20);
+        buttonsBox.setAlignment(Pos.CENTER);
+
+        VBox mainCad = new VBox(tituloBox, fromGrid, buttonsBox);
+        mainCad.setSpacing(10);
+        mainCad.setAlignment(Pos.CENTER);
+
+        VBox rectangleCad = new VBox(mainCad);
+        rectangleCad.setAlignment(Pos.CENTER);
+        rectangleCad.setStyle(
+                "-fx-background-color: #ffffff;-fx-background-radius: 30"
+        );
+        rectangleCad.setMaxHeight(500);
+        rectangleCad.setMinWidth(400);
+
+        HBox mainContent = new HBox(rectangleCad);
+        mainContent.setMaxWidth(1200);
+        mainContent.setMaxHeight(700);
+        mainContent.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox layout = new VBox();
+        layout.setStyle("-fx-background-image: url('BackGround.jpeg'); -fx-background-repeat: stretch; -fx-background-size: cover;");
         layout.setAlignment(Pos.CENTER);
         StackPane root = new StackPane();
-        root.getChildren().addAll(background,rectangle, layout);
+        root.getChildren().addAll(layout, mainContent);
+
         Scene scene = new Scene(root, 500,700);
         stage.setTitle("Cadastro de Cliente");
         stage.setScene (scene);
