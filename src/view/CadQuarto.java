@@ -6,18 +6,20 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import view.components.Buttons;
 import view.components.Sidebar;
 
-
-public class CadCliente extends Application {
-
+public class CadQuarto extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -41,58 +43,60 @@ public class CadCliente extends Application {
                 "-fx-font-size: 12;" +
                 "-fx-font-family: '" + fontRegular.getFamily() + "';";
 
-        Image iconBtnPessoa = new Image(getClass().getResourceAsStream("/view/resources/img/Pessoa2.png"));
+        Image iconBtnQuarto = new Image(getClass().getResourceAsStream("/view/resources/img/Quarto2.png"));
 
-        ImageView iconPessoa = new ImageView(iconBtnPessoa);
-        iconPessoa.setFitWidth(20);
-        iconPessoa.setFitHeight(20);
+        ImageView iconQuarto = new ImageView(iconBtnQuarto);
+        iconQuarto.setFitWidth(20);
+        iconQuarto.setFitHeight(20);
 
-        Label lblTitulo = new Label("Cadastro de Cliente");
+        Label lblTitulo = new Label("Cadastro de Quarto: ");
         lblTitulo.setStyle(styleSemiBold);
         lblTitulo.setAlignment(Pos.CENTER);
-        HBox tituloBox = new HBox(iconPessoa, lblTitulo);
+        HBox tituloBox = new HBox(iconQuarto, lblTitulo);
         tituloBox.setPadding(new Insets(20,20,20,20));
         tituloBox.setAlignment(Pos.CENTER);
 
-        Label lblNome = new Label("Nome");
+        Label lblNome = new Label("Nome do Quarto: ");
         lblNome.setStyle(styleRegular);
         TextField txtNome = new TextField();
         txtNome.setMinWidth(200);
 
-        Label lblCpf = new Label("CPF");
-        lblCpf.setStyle(styleRegular);
-        TextField txtCpf = createMaskField("###.###.###-##");
-        txtCpf.setMinWidth(200);
+        Label lblNumero = new Label("Numero do Quarto: ");
+        lblNumero.setStyle(styleRegular);
+        TextField txtNumero = new TextField();
+        txtNumero.setMinWidth(200);
 
-        Label lblTelefone = new Label("Telefone");
-        lblTelefone.setStyle(styleRegular);
-        TextField txtTelefone = createMaskField("(##) #####-####");
-        txtTelefone.setMinWidth(200);
+        Label lblPreco = new Label("Preço do Quarto: ");
+        lblNumero.setStyle(styleRegular);
+        TextField txtPreco = createMaskField("R$###,##");;
+        txtNumero.setMinWidth(200);
 
-        Label lblEmail = new Label("Email");
-        lblEmail.setStyle(styleRegular);
-        TextField txtEmail = new TextField();
-        txtEmail.setMinWidth(200);
+        Label lblCamaCasal = new Label("Quantidade Cama Casal: ");
+        lblCamaCasal.setStyle(styleRegular);
+        Spinner<Integer> qtdCamaCsal = new Spinner<>(0, 2, 0);
+        qtdCamaCsal.setMinWidth(200);
+
+        Label lblCamaSolteiro = new Label("Quantidade Cama Solteiro: ");
+        lblCamaSolteiro.setStyle(styleRegular);
+        Spinner<Integer> qtdCamaSolteiro = new Spinner<>(0, 2, 0);
+        qtdCamaSolteiro.setMinWidth(200);
 
         ComboBox emailOpt = new ComboBox();
-        emailOpt.getItems().addAll("@gmail.com", "@email.com","@yahoo.com");
+        emailOpt.getItems().addAll("Disponivel", "Indisponivel");
         emailOpt.setMinWidth(120);
-
-        GridPane gridEmail = new GridPane();
-        gridEmail.add(txtEmail, 1, 0);
-        gridEmail.add(emailOpt, 2, 0);
-        gridEmail.setMaxWidth(200);
 
         GridPane fromGrid = new GridPane();
         fromGrid.setAlignment(Pos.CENTER);
         fromGrid.add(lblNome,0, 0);
         fromGrid.add(txtNome, 1, 0);
-        fromGrid.add(lblCpf, 0, 1);
-        fromGrid.add(txtCpf, 1, 1);
-        fromGrid.add(lblTelefone, 0, 2);
-        fromGrid.add(txtTelefone, 1, 2);
-        fromGrid.add(lblEmail, 0, 3);
-        fromGrid.add(gridEmail, 1, 3);
+        fromGrid.add(lblNumero, 0, 1);
+        fromGrid.add(txtNumero, 1, 1);
+        fromGrid.add(lblPreco, 0, 2);
+        fromGrid.add(txtPreco, 1, 2);
+        fromGrid.add(lblCamaCasal, 0, 3);
+        fromGrid.add(qtdCamaCsal, 1, 3);
+        fromGrid.add(lblCamaSolteiro, 0, 4);
+        fromGrid.add(qtdCamaSolteiro, 1, 4);
         fromGrid.setHgap(10);
         fromGrid.setVgap(10);
 
