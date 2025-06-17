@@ -1,5 +1,6 @@
 package dao;
 
+import model.Usuarios;
 import util.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,17 +66,17 @@ public class UsuariosDao {
         return false;
     }
 
-    public void pesquisarUsuario() {
+    public void altenticarUsuario(Usuarios usuario) {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement pesquisarUsuario = conndb.prepareStatement("SELECT nome, email FROM usuarios WHERE fk_funcoes = ?;");
-            pesquisarUsuario.setInt(1, 1);
-            ResultSet resultado = pesquisarUsuario.executeQuery();
+            PreparedStatement altenticarUsuario = conndb.prepareStatement("SELECT nome FROM usuarios WHERE email = ? AND senha = md5(?);");
+            altenticarUsuario.setString(1, usuario.getEmail());
+            altenticarUsuario.setString(2, usuario.getSenha());
+            ResultSet resultado = altenticarUsuario.executeQuery();
 
             while (resultado.next()) {
                 String nome = resultado.getString("nome");
-                String email = resultado.getString("email");
-                System.out.println("Nome: "+ nome + "\nEmail: "+ email);
+                System.out.println("Nome: "+ nome);
             }
             conndb.close();
         }
