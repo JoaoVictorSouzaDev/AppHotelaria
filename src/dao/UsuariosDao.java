@@ -46,18 +46,18 @@ public class UsuariosDao {
         }
     }
 
-    public boolean alterarUsuario() {
+    public boolean atualizarUsuario() {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement alterarUsuario = conndb.prepareStatement("UPDATE usuarios " + "SET nome = ?, senha = md5(?), email = ?, fk_funcoes = ? WHERE id = ?;");
+            PreparedStatement atualizarUsuario = conndb.prepareStatement("UPDATE usuarios " + "SET nome = ?, senha = md5(?), email = ?, fk_funcoes = ? WHERE id = ?;");
 
-            alterarUsuario.setString(1, "João");
-            alterarUsuario.setInt(2, 321);
-            alterarUsuario.setString(3, "Souza@gmail.com");
-            alterarUsuario.setInt(4, 1);
-            alterarUsuario.setInt(5, 3);
+            atualizarUsuario.setString(1, "João");
+            atualizarUsuario.setInt(2, 321);
+            atualizarUsuario.setString(3, "Souza@gmail.com");
+            atualizarUsuario.setInt(4, 1);
+            atualizarUsuario.setInt(5, 3);
 
-            int linhaAfetada = alterarUsuario.executeUpdate();
+            int linhaAfetada = atualizarUsuario.executeUpdate();
             conndb.close();
             return linhaAfetada > 0;
         } catch (Exception erro) {
@@ -66,22 +66,23 @@ public class UsuariosDao {
         return false;
     }
 
-    public void altenticarUsuario(Usuarios usuario) {
+    public boolean autenticarUsuario(Usuarios usuario) {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement altenticarUsuario = conndb.prepareStatement("SELECT nome FROM usuarios WHERE email = ? AND senha = md5(?);");
-            altenticarUsuario.setString(1, usuario.getEmail());
-            altenticarUsuario.setString(2, usuario.getSenha());
-            ResultSet resultado = altenticarUsuario.executeQuery();
+            PreparedStatement stmt = conndb.prepareStatement("SELECT nome FROM usuarios WHERE email = ? AND senha = md5(?);");
+            stmt.setString(1, usuario.getEmail());
+            stmt.setString(2, usuario.getSenha());
+            ResultSet resultado = stmt.executeQuery();
 
-            while (resultado.next()) {
+            boolean acessoAutorizado = resultado.next();
                 String nome = resultado.getString("nome");
-                System.out.println("Nome: "+ nome);
-            }
+                System.out.println("Olá, seja bem vindo, "+ nome);
             conndb.close();
-        }
-        catch (Exception erro) {
+
+            return acessoAutorizado;
+        } catch (Exception erro) {
             System.out.println("Erro ao pesquisar usuario: " + erro);
+            return false;
         }
     }
 }
