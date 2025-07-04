@@ -1,5 +1,6 @@
 package view;
 
+import controller.QuartosController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -68,7 +69,7 @@ public class CadQuarto extends Application {
 
         Label lblPreco = new Label("Preço do Quarto: ");
         lblNumero.setStyle(styleRegular);
-        TextField txtPreco = createMaskField("R$###,##");;
+        TextField txtPreco = new TextField();
         txtNumero.setMinWidth(200);
 
         Label lblCamaCasal = new Label("Quantidade Cama Casal: ");
@@ -81,9 +82,35 @@ public class CadQuarto extends Application {
         Spinner<Integer> qtdCamaSolteiro = new Spinner<>(0, 2, 0);
         qtdCamaSolteiro.setMinWidth(200);
 
-        ComboBox emailOpt = new ComboBox();
-        emailOpt.getItems().addAll("Disponivel", "Indisponivel");
-        emailOpt.setMinWidth(120);
+        Label lblDisponivel = new Label("Disponibilidade: ");
+        lblDisponivel.setStyle(styleRegular);
+        ComboBox disponivelQpt = new ComboBox();
+        disponivelQpt.getItems().addAll("Disponivel", "Indisponivel");
+        disponivelQpt.setMinWidth(120);
+
+        buttons.btnCadastrar.setOnAction(evento -> {
+            String nome = txtNome.getText();
+            String numero = txtNumero.getText();
+            double preco = Double.parseDouble(txtPreco.getText());
+            int qtdCamaCasal = qtdCamaCsal.getValue();
+            int qtdCamasolteiro = qtdCamaSolteiro.getValue();
+
+            String selecaoDisponivel = (String) disponivelQpt.getSelectionModel().getSelectedItem();
+            boolean disponivel;
+            if ("Disponivel".equalsIgnoreCase(selecaoDisponivel)) {
+                disponivel = true;
+            } else {
+                disponivel = false;
+            }
+
+            QuartosController quartosController = new QuartosController();
+            boolean insercaoSucesso = quartosController.inserirQuartos(nome, numero, qtdCamaCasal, qtdCamasolteiro, preco, disponivel);
+            if (insercaoSucesso) {
+                System.out.println("quarto inserido com sucesso!");
+            } else {
+                System.out.println("Falha");
+            }
+        });
 
         GridPane fromGrid = new GridPane();
         fromGrid.setAlignment(Pos.CENTER);
@@ -97,6 +124,8 @@ public class CadQuarto extends Application {
         fromGrid.add(qtdCamaCsal, 1, 3);
         fromGrid.add(lblCamaSolteiro, 0, 4);
         fromGrid.add(qtdCamaSolteiro, 1, 4);
+        fromGrid.add(disponivelQpt,1,5);
+        fromGrid.add(lblDisponivel,0,5);
         fromGrid.setHgap(10);
         fromGrid.setVgap(10);
 

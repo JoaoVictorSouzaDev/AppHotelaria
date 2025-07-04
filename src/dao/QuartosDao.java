@@ -1,5 +1,6 @@
 package dao;
 
+import model.Quartos;
 import util.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -87,6 +88,26 @@ public class QuartosDao {
         }
         catch (Exception erro) {
             System.out.println("Erro ao pesquisar quarto: " + erro);
+        }
+    }
+    public boolean inserirQuartos(Quartos quartos) {
+        try {
+            Connection conndb = conexao.conectar();
+            PreparedStatement stmt = conndb.prepareStatement("INSERT INTO quartos (nome, numero, qtd_cama_casal, qtd_cama_solteiro, preco, disponivel) VALUES (?, ?, ?, ?, ?, ?);");
+            stmt.setString(1, quartos.getNome());
+            stmt.setString(2, quartos.getNumero());
+            stmt.setInt(3, quartos.getQtdCamaCasal());
+            stmt.setInt(4, quartos.getQtdCamaSolteiros());
+            stmt.setDouble(5, quartos.getPreco());
+            stmt.setBoolean(6, quartos.isDisponivel());
+
+            int linhaAfetada = stmt.executeUpdate();
+            conndb.close();
+            return linhaAfetada > 0;
+
+        } catch (Exception erro) {
+            System.out.println("Erro ao inserir quarto: " + erro);
+            return false;
         }
     }
 }
